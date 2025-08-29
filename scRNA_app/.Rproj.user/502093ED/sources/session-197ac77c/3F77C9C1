@@ -1,0 +1,26 @@
+{
+    "id": "3F77C9C1",
+    "path": "C:/Users/Hadassah/Desktop/Bioinformatics/3rd year/final_proj/scRNAseq_GUI/scRNAseq_GUI-3/scRNA_app/modules/qc.R",
+    "project_path": "modules/qc.R",
+    "type": "r_source",
+    "hash": "3915203193",
+    "contents": "",
+    "dirty": false,
+    "created": 1756483845232.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "44,0",
+        "scrollLine": "25"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1756484429,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1756484429748,
+    "read_only": false,
+    "read_only_alternatives": []
+}

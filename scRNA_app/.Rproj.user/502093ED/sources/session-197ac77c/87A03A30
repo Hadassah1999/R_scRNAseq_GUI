@@ -1,0 +1,26 @@
+{
+    "id": "87A03A30",
+    "path": "C:/Users/Hadassah/Desktop/Bioinformatics/3rd year/final_proj/scRNAseq_GUI/scRNAseq_GUI-3/scRNA_app/modules/gene_highlighting.R",
+    "project_path": "modules/gene_highlighting.R",
+    "type": "r_source",
+    "hash": "1993716400",
+    "contents": "",
+    "dirty": false,
+    "created": 1756483835257.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "446,1",
+        "scrollLine": "359"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1756483987,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1756483987739,
+    "read_only": false,
+    "read_only_alternatives": []
+}
