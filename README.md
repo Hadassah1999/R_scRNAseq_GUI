@@ -21,16 +21,19 @@ This project provides an interactive R Shiny GUI for analyzing single-cell RNA-s
 
 ## How to run the program
 
-Requirements prior to running program:
-* R enviromant
-* Following R libraries: shiny, shinyFiles, Seurat, SingleCellExperiment, SingleR, celldex, dplyr, ggplot2, biomaRt, shinycssloaders, hdf5r, colourpicker
+Before running the program, ensure that you have:
+* R environment installed.
+* The following R libraries installed:
+  ```shiny, shinyFiles, Seurat, SingleCellExperiment, SingleR, celldex, dplyr, ggplot2, biomaRt, shinycssloaders, hdf5r, colourpicker.```
 <br><br>
 
 For your convevience, run the following command in your R evironment to download the required libraries:<br>
-```install.packages(setdiff(
+```
+install.packages(setdiff(
   c("shiny", "shinyFiles", "Seurat", "SingleCellExperiment", "SingleR", "celldex", "dplyr", "ggplot2", "biomaRt", "shinycssloaders", "hdf5r", "colourpicker"),
   rownames(installed.packages())
-))```
+))
+```
 
 
 Fisrt, clone or download the repository to your PC.<br>
