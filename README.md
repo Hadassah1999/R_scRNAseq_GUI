@@ -25,18 +25,51 @@ Fisrt, clone or download the repository to your PC.<br>
 Before running the program, make sure that R environment is installed.<br>
 All other required libraries will be installed automatically when the app is run, if they are not already present.<br><br>
 
-**Running the program on Windows:** <Br>
+**Running the program on Windows:**
+
 In the main folder of the repository, you can find a ```scRNAseq.bat``` file.<br>
 One double click on this folder, would launch and open the app.<br><br>
 
-**Running the program on MacOS:** <Br>
+**Running the program on MacOS:**
+
+In the main folder of the repository, you can find a ```scRNAseq.command``` file.<br>
+When you first try to run the script, macOS Gatekeeper may show this warning:<br>
+> “Apple could not verify `scRNAseq.command` is free of malware that may harm your Mac or compromise your privacy.”
+
+This happens because the file is not signed by an identified developer. If you trust the script, follow one of the methods below (if not, see the alternative way):
+
+Option A – Allow via System Settings:
+
+1. Double-click ```scRNAseq.command``` once (see the warning, then close it).
+2. Open 'System Settings' → 'Privacy & Security'.
+3. Scroll to the 'Security' section.
+4. Click “Allow Anyway” next to ```scRNAseq.command```.
+5. Run the file again and click “Open” when prompted.
+
+Option B – Allow via ```Terminal```:
+
+1. Open Terminal.
+2. Run the following commands, replacing `/path/to/` with the file's real location:
+   ```bash
+   xattr -d com.apple.quarantine /path/to/scRNAseq.command
+   chmod +x /path/to/scRNAseq.command
+
+After clearing the Gatekeeper block, you can simply double-click scRNAseq.command at any time.<br>
+This will automatically start the app or analysis environment without requiring Terminal commands.
+
+(Optional) Create a Desktop Shortcut:<br>
+If you want to launch the app directly from your Desktop:<br>
+1. Right-click on ```scRNAseq.command```. <br>
+2. Select Make Alias.<br>
+3. Move the alias to your Desktop.<br>
+4. Double-click the alias to open the app quickly.<br>
 
 **Alternatively:** <br>
 If you prefer not to use the executable files, you can open the repository in your R IDE and manually run the app by clicking ```Run App``` in the app.R file. <br><br>
 
 Once you launch the app, the following screen should appear in your browser:
 
-<img width="600" height="300" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
+<img width="1200" height="600" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
 
 
 <br>Now, you can proceed with your analysis according to the data type.
