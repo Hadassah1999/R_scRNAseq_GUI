@@ -21,24 +21,18 @@ This project provides an interactive R Shiny GUI for analyzing single-cell RNA-s
 
 ## How to run the program
 
-Before running the program, ensure that you have:
-* R environment installed.
-* The following R libraries installed:
-  ```shiny, shinyFiles, Seurat, SingleCellExperiment, SingleR, celldex, dplyr, ggplot2, biomaRt, shinycssloaders, hdf5r, colourpicker.```
-<br><br>
-
-For your convevience, run the following command in your R evironment to download the required libraries:<br>
-```
-install.packages(setdiff(
-  c("shiny", "shinyFiles", "Seurat", "SingleCellExperiment", "SingleR", "celldex", "dplyr", "ggplot2", "biomaRt", "shinycssloaders", "hdf5r", "colourpicker"),
-  rownames(installed.packages())
-))
-```
-
-
 Fisrt, clone or download the repository to your PC.<br>
-Next, 
-**running instructions
+Before running the program, make sure that the R environment is installed.<br>
+All other required libraries will be installed automatically when the app is run, if they are not already present.<br><br>
+
+**Running the program on Windows:** <Br>
+In the main folder of the repository, you can find a ```scRNAseq.bat``` file.<br>
+One double click on this folder, would launch and open the app.<br><br>
+
+**Running the program on MacOS:** <Br>
+
+**Alternatively:** <br>
+If you prefer not to use the executable files, you can open the repository in your R environment and manually run the app by clicking ```Run App``` in the app.R file. <br><br>
 
 Once you launch the app, the following screen should appear in your browser:
 
