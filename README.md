@@ -22,7 +22,7 @@ This project provides an interactive R Shiny GUI for analyzing single-cell RNA-s
 ## How to run the program
 
 Fisrt, clone or download the repository to your PC.<br>
-Before running the program, make sure that the R environment is installed.<br>
+Before running the program, make sure that R environment is installed.<br>
 All other required libraries will be installed automatically when the app is run, if they are not already present.<br><br>
 
 **Running the program on Windows:** <Br>
@@ -32,7 +32,7 @@ One double click on this folder, would launch and open the app.<br><br>
 **Running the program on MacOS:** <Br>
 
 **Alternatively:** <br>
-If you prefer not to use the executable files, you can open the repository in your R environment and manually run the app by clicking ```Run App``` in the app.R file. <br><br>
+If you prefer not to use the executable files, you can open the repository in your R IDE and manually run the app by clicking ```Run App``` in the app.R file. <br><br>
 
 Once you launch the app, the following screen should appear in your browser:
 
