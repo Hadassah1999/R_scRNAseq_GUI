@@ -27,9 +27,11 @@ Once you launch the app, the following screen should appear in your browser:
 <img width="600" height="300" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
 
 
-Now, you can proceed with your analysis according to the data type.
+<br>Now, you can proceed with your analysis according to the data type.
 
 ## How to process .rds files
+
+In the main upload screen, select .rds data type, insert path to data and press '''Load Data'''
 
 
 ## How to process 10X or H5 files
