@@ -32,8 +32,8 @@ Once you launch the app, the following screen should appear in your browser:
 ## Uploading data
 
 **The GUI supports scRNA-seq data in three formats: .rds, 10X, and .h5. <br>**
-After selecting the data type, provide the path to your dataset. <br>
-The path must follow this format: ```your\path\to\data.rds```<br>
+After selecting the data type, provide the path to your dataset. <br><br>
+The path must follow this format: ```your\path\to\data.rds```<br><br>
 **Important:** Make sure the file path contains no spaces or parentheses.<br>
 You can easily copy the correct path by right-clicking the file and selecting "Copy as path" (Windows).
 
