@@ -1,7 +1,7 @@
 # scRNAseq analysis GUI using R
-GUI Overview
 
-* This project provides an interactive R Shiny GUI for analyzing single-cell RNA-seq data. The interface is organized into modular components, making it easy to follow the standard scRNA-seq analysis workflow:
+**GUI Overview:**
+This project provides an interactive R Shiny GUI for analyzing single-cell RNA-seq data. The interface is organized into modular components, making it easy to follow the standard scRNA-seq analysis workflow:
 
 * Upload Module – Supports input of raw count data in 10X Genomics (folder format) or H5 files. Users can add multiple samples and assign custom names.
 
@@ -20,9 +20,15 @@ GUI Overview
 * Differentially Expressed Genes (DEGs) - Identify and explore marker genes by running DEG analysis between selected groups of cells.
 
 ## How to run the program
-1) first, clone repository
+**running instructions
 
+Once you launch the app, the following screen should appear in your browser:
+
+<img width="962" height="402" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
+
+Now, you can proceed with your analysis according to the data type.
 
 ## How to process .rds files
+
 
 ## How to process 10X or H5 files
