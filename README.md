@@ -98,3 +98,28 @@ Use the navbar at the top of the page to navigate between the different analysis
 
 
 ## How to process 10X or H5 files
+<img width="1492" height="714" alt="image" src="https://github.com/user-attachments/assets/dd249156-71c2-4904-acb5-29082f4ed268" />
+
+This is the first step in the workflow for raw data.<br>
+In this tab, you can:
+- Upload one or more raw samples<br>
+    Supported formats:<br>
+   - 10X Genomics directory<br>
+   -  H5 file<br>
+- Assign sample names for easier tracking.<br>
+- Add per-sample metadata.
+
+Once your paths and metadata are set, click "Create & Present Seurat Object" to load the data.
+
+>⚠️ Important:
+Avoid loading extremely large datasets on computers with limited memory. The QC, normalization, and clustering steps involve heavy calculations, and oversized objects may cause the app to hang or crash.
+
+### Requirements for 10X Genomics Directory
+
+When uploading **10X data**, the folder you select **must contain exactly these three files**:
+
+- `barcodes.tsv.gz`  
+- `features.tsv.gz`  
+- `matrix.mtx.gz`
+
+After this, follow the steps **in order**, starting with Step 1: Visualize & Filter data and continuing through normalization, PCA and clustering
