@@ -20,6 +20,21 @@ This project provides an interactive R Shiny GUI for analyzing single-cell RNA-s
 * Differentially Expressed Genes (DEGs) - Identify and explore marker genes by running DEG analysis between selected groups of cells.
 
 ## How to run the program
+
+Requirements prior to running program:
+* R enviromant
+* Following R libraries: shiny, shinyFiles, Seurat, SingleCellExperiment, SingleR, celldex, dplyr, ggplot2, biomaRt, shinycssloaders, hdf5r, colourpicker
+<br><br>
+
+For your convevience, run the following command in your R evironment to download the required libraries:<br>
+```install.packages(setdiff(
+  c("shiny", "shinyFiles", "Seurat", "SingleCellExperiment", "SingleR", "celldex", "dplyr", "ggplot2", "biomaRt", "shinycssloaders", "hdf5r", "colourpicker"),
+  rownames(installed.packages())
+))```
+
+
+Fisrt, clone or download the repository to your PC.<br>
+Next, 
 **running instructions
 
 Once you launch the app, the following screen should appear in your browser:
