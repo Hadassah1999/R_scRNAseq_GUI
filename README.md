@@ -29,9 +29,17 @@ Once you launch the app, the following screen should appear in your browser:
 
 <br>Now, you can proceed with your analysis according to the data type.
 
+## Uploading data
+
+The GUI suppots scRNAseq data in .rds, 10X of H5 formats.<br>
+After selecting data type, insert your path do data.<br> 
+Notice the path is required to be in the following format:<br>
+```your\path\to\data.rds```
+
 ## How to process .rds files
 
-In the main upload screen, select .rds data type, insert path to data and press '''Load Data'''
+In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
+
 
 
 ## How to process 10X or H5 files
