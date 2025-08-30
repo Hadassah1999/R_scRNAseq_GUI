@@ -42,7 +42,8 @@ You can easily copy the correct path by right-clicking the file and selecting "C
 
 In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
 The main analysis page would appear:<br>
-<img width="850" height="400" alt="image" src="https://github.com/user-attachments/assets/da7935b8-5405-4847-8747-280920532dee" /><br>
+<img width="1094" height="728" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
+<br>
 
 Use the navbar at the top of the page to navigate between the different analysis pages:
 * Cell annotation - Possible for Human or mouse samples
