@@ -1,6 +1,27 @@
-#install.packages("hdf5r")
+# List of required libraries
+libs <- c(
+  "shiny",
+  "shinyFiles",
+  "Seurat",
+  "SingleCellExperiment",
+  "SingleR",
+  "celldex",
+  "dplyr",
+  "ggplot2",
+  "biomaRt",
+  "shinycssloaders",
+  "hdf5r",
+  "colourpicker"
+)
 
-# Load all libraries
+# Install any that are missing
+for (lib in libs) {
+  if (!requireNamespace(lib, quietly = TRUE)) {
+    install.packages(lib)
+  }
+}
+
+# Load the libraries
 library(shiny)
 library(shinyFiles)
 library(Seurat)
@@ -13,6 +34,3 @@ library(biomaRt)
 library(shinycssloaders)
 library(hdf5r)
 library(colourpicker)
-
-
-
