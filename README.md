@@ -24,7 +24,8 @@ This project provides an interactive R Shiny GUI for analyzing single-cell RNA-s
 
 Once you launch the app, the following screen should appear in your browser:
 
-<img width="962" height="402" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
+<img width="600" height="300" alt="image" src="https://github.com/user-attachments/assets/50e59d2c-fe71-4fde-948c-a143f345eda3" />
+
 
 Now, you can proceed with your analysis according to the data type.
 
