@@ -41,8 +41,8 @@ You can easily copy the correct path by right-clicking the file and selecting "C
 ## How to process .rds files
 
 In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
-The main analysis page would appear:<br>
-<img width="1094" height="728" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
+The main analysis page would appear:<br><br>
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
 <br>
 
 Use the navbar at the top of the page to navigate between the different analysis pages:
