@@ -82,21 +82,6 @@ The path must follow this format: ```your\path\to\data.rds```<br><br>
 **Important:** Make sure the file path contains no spaces or parentheses.<br>
 You can easily copy the correct path by right-clicking the file and selecting "Copy as path" (Windows).
 
-
-## How to process .rds files
-
-In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
-The main analysis page would appear:<br><br>
-<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
-<br>
-
-Use the navbar at the top of the page to navigate between the different analysis pages:
-* Cell annotation - Possible for Human or mouse samples
-* Gene highlighting - Main analysis page
-* Differentially expressed genes
-* rds Download - Download updated version of .rds file
-
-
 ## How to process 10X or H5 files
 <img width="1492" height="714" alt="image" src="https://github.com/user-attachments/assets/dd249156-71c2-4904-acb5-29082f4ed268" />
 
@@ -122,4 +107,68 @@ When uploading **10X data**, the folder you select **must contain exactly these 
 - `features.tsv.gz`  
 - `matrix.mtx.gz`
 
-After this, follow the steps **in order**, starting with Step 1: Visualize & Filter data and continuing through normalization, PCA and clustering
+After this, follow the steps **in order**, starting with Step 1: Visualize & Filter data and continuing through normalization, PCA and clustering.
+
+### Step 1: Visualize & Filter Data (QC)
+
+After creating the Seurat object, proceed to the **"Step 1: Visualize & Filter Data"** tab.
+
+Here you can:
+- **Inspect quality metrics** for each cell:
+  - `nFeature_RNA` (number of detected genes)
+  - `percent.mt` (percentage of mitochondrial genes)
+- **Visualize data** with violin plots for better threshold selection.
+- **Filter low-quality cells** interactively by adjusting the sliders or entering custom thresholds.
+
+Once filtering is applied, the updated Seurat object will be used in all subsequent steps.
+
+> **Tip:** Use conservative thresholds to avoid losing biologically relevant cells.
+
+---
+
+### Step 2: Normalization
+
+In the **"Step 2: Normalization"** tab, you can choose one of the available normalization methods:
+Optional **scaling** is available to standardize gene expression for PCA and clustering.
+
+---
+
+### Step 3: PCA
+
+The **"Step 3: PCA"** tab provides:
+- **Principal Component Analysis (PCA)** to reduce dimensionality.
+- **Elbow Plot** to guide the selection of an optimal number of PCs.
+
+> **Tip:** The Elbow Plot helps identify where the variance explained by additional PCs starts to flatten out.
+
+---
+
+### Step 4: Dimension Reduction & Clustering
+
+In this step:
+- Run **UMAP** for advanced dimensionality reduction.
+- Perform clustering with adjustable resolution parameters.
+- Visualize clusters interactively to explore distinct cell populations.
+
+---
+
+### Step 5: Export & Proceed Analysis
+
+Once the preprocessing workflow is complete, you can:
+- **Export the updated Seurat object** as an ```.rds``` file for further use.
+- Proceed to **annotation, gene highlighting, or DEG analysis** using the processed data.
+
+## How to process .rds files
+
+In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
+The main analysis page would appear:<br><br>
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
+<br>
+
+Use the navbar at the top of the page to navigate between the different analysis pages:
+* Cell annotation - Possible for Human or mouse samples
+* Gene highlighting - Main analysis page
+* Differentially expressed genes
+* rds Download - Download updated version of .rds file
+
+
