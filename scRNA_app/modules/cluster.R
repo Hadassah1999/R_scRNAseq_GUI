@@ -20,7 +20,7 @@ clusterUI <- function(id) {
         br(),
         downloadButton(ns("download_plot"), "Download UMAP Plot"),
         br(), br(),
-        helpText("After clustering, proceed to Step 5.")
+        helpText("After clustering, proceed to next step.")
       ),
       mainPanel(
         h4("UMAP Colored by Clusters"),

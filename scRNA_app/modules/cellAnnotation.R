@@ -11,6 +11,7 @@ annotationUI <- function(id) {
         ),
         actionButton(ns("annotate_btn"), "Run SingleR Annotation"),
         uiOutput(ns("dataset_filter_ui")),  # <- added filter UI
+        checkboxInput(ns("show_labels"), "Show annotation labels on UMAP", value = TRUE),
         downloadButton(ns("download_plot"), "Download DimPlot")
       ),
       mainPanel(
@@ -139,8 +140,9 @@ annotationServer <- function(id, app_data) {
           obj$cell_ann <- labels
         }
         
-        # persist updated metadata back once
-        if (!is.null(app_data$dataset)) app_data$dataset <- obj else app_data$seurat_obj <- obj
+        app_data$dataset <- obj
+        app_data$seurat_obj <- obj
+        
         
         removeNotification("anno_progress")
         showNotification("✅ Annotation done.", type = "message")
@@ -186,7 +188,7 @@ annotationServer <- function(id, app_data) {
     output$plot <- renderPlot({
       obj <- filtered_obj()
       req(obj)
-      DimPlot(obj, group.by = "cell_ann", label = TRUE, repel = TRUE) +
+      DimPlot(obj, group.by = "cell_ann", label = input$show_labels, repel = TRUE) +
         ggtitle("SingleR Annotation")
     })
     

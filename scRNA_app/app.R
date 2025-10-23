@@ -18,6 +18,8 @@ app_data <- reactiveValues(
 # Define UI
 ui <- fluidPage(
   tags$head(
+    tags$title("scRNAseq App"),
+    tags$link(rel = "icon", type = "image/png", href = "favicon6.png"),
     tags$script(HTML("
     Shiny.addCustomMessageHandler('clear_notifications', function(message) {
       $('.shiny-notification').remove();

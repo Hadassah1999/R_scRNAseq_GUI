@@ -11,7 +11,10 @@ libs <- c(
   "biomaRt",
   "shinycssloaders",
   "hdf5r",
-  "colourpicker"
+  "colourpicker",
+  "purrr",
+  "patchwork",
+  "scDblFinder"
 )
 
 # Install any that are missing
@@ -34,3 +37,6 @@ library(biomaRt)
 library(shinycssloaders)
 library(hdf5r)
 library(colourpicker)
+library(purrr)
+library(patchwork)
+library(scDblFinder)

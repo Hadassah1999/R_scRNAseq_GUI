@@ -27,7 +27,7 @@ normalizationServer <- function(id, app_data) {
         output$norm_status <- renderText({
           paste0("✅ Normalization done using method: ", input$norm_method,
                  ifelse(input$do_scale, " and scaling applied.", " (scaling skipped)."),
-                 "\n\nProceed to Step 3.")
+                 "\n\nProceed to next step.")
         })
       }, error = function(e) {
         output$norm_status <- renderText(paste("❌ Error:", e$message))

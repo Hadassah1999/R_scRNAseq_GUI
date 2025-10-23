@@ -11,7 +11,7 @@ pcaUI <- function(id) {
         br(),
         uiOutput(ns("pc_selector_ui")),
         br(),
-        helpText("You can now proceed to step 4.")
+        helpText("You can now proceed to next step.")
       ),
       mainPanel(
         h4("Elbow Plot"),

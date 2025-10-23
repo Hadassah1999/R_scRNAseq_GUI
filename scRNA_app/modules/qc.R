@@ -201,7 +201,7 @@ qcModuleServer <- function(id, app_data) {
         "Class:", class(obj)[1],
         "\nCells:", ncol(obj),
         "\nGenes:", nrow(obj),
-        "\n\nProceed to step 1"
+        "\n\nProceed to next step"
       )
     })
    
@@ -221,6 +221,12 @@ qcModuleServer <- function(id, app_data) {
             Read10X(data.dir = path)
           }
           mat <- pick_10x_matrix(raw)
+          # --- Check orientation: genes × cells ---
+          if (nrow(mat) < ncol(mat)) {
+            warning(sprintf("Matrix for sample %s looks transposed (%d rows, %d cols), transposing...", 
+                            samp, nrow(mat), ncol(mat)))
+            mat <- t(mat)
+          }
           so  <- CreateSeuratObject(counts = mat, project = samp)
           so$orig.ident <- samp  # for per-sample metadata
           objs[[samp]] <- so

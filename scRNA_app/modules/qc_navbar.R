@@ -3,6 +3,9 @@ source("modules/visualize.R")
 source("modules/normalize.R")
 source("modules/pca.R")
 source("modules/cluster.R")
+source("modules/cellAnnotation.R")
+source("modules/gene_highlighting.R")
+source("modules/marker_genes.R")
 source("modules/final.R")
 
 qcUI <- function(id) {
@@ -17,19 +20,25 @@ qcUI <- function(id) {
       actionButton(ns("back_btn"), "⬅ Back to Upload")
     ),
     
-    tabPanel("Step 1: Visualize & Filter data", 
+    tabPanel("Filter data", 
              qcFilterUI(ns("filter_step"))
     ),
     
-    tabPanel("Step 2: Normalization", 
+    tabPanel("Normalization", 
              normalizationUI(ns("norm_step"))
     ),
     
-    tabPanel("Step 3: PCA", pcaUI(ns("pca_step"))),
+    tabPanel("PCA", pcaUI(ns("pca_step"))),
     
-    tabPanel("step 4: Dimension Reduction & Clustering", clusterUI(ns("cluster_step"))),
+    tabPanel("Clustering", clusterUI(ns("cluster_step"))),
     
-    tabPanel("Step 5: Export and Proceed analysis", finalUI(ns("final_step")))
+    tabPanel("Cell Annotation", annotationUI(ns("ann_step"))),
+    
+    tabPanel("Cell highlighting by gene", geneHighlightingUI(ns("geneHighlighting"))),
+    
+    tabPanel("Marker Genes", markersUI(ns("markers"))),
+    
+    tabPanel("Export", finalUI(ns("final_step")))
   )
 }
 
@@ -40,6 +49,9 @@ qcServer <- function(id, app_data) {
     normalizationServer("norm_step", app_data)
     pcaServer("pca_step", app_data)
     clusterServer("cluster_step", app_data)
+    annotationServer("ann_step", app_data)
+    geneHighlightingServer("geneHighlighting", app_data)
+    markersServer("markers", app_data)
     finalServer("final_step", app_data)
     observeEvent(input$back_btn, {
       session$sendCustomMessage(type = "clear_notifications", message = list())
