@@ -214,6 +214,12 @@ qcModuleServer <- function(id, app_data) {
       for (i in seq_len(nrow(df))) {
         path <- df$path[i]
         samp <- df$name[i]
+        
+        if (samp %in% names(objs)) {
+          showNotification(paste("⚠️ Sample", samp, "already loaded, skipping"), type="warning")
+          next
+        }
+        
         tryCatch({
           raw <- if (grepl("\\.h5$", path, ignore.case = TRUE)) {
             Read10X_h5(path, use.names = TRUE)
@@ -223,13 +229,35 @@ qcModuleServer <- function(id, app_data) {
           mat <- pick_10x_matrix(raw)
           # --- Check orientation: genes × cells ---
           if (nrow(mat) < ncol(mat)) {
-            warning(sprintf("Matrix for sample %s looks transposed (%d rows, %d cols), transposing...", 
+            warning(sprintf("Matrix for sample %s has (%d rows, %d cols)...", 
                             samp, nrow(mat), ncol(mat)))
-            mat <- t(mat)
           }
-          so  <- CreateSeuratObject(counts = mat, project = samp)
+          
+          # Compute nFeature_RNA and nCount_RNA the Seurat way
+          nFeature_RNA <- Matrix::colSums(mat > 0)
+          nCount_RNA <- Matrix::colSums(mat)
+          
+          keep <- nFeature_RNA > 150 & nCount_RNA > 500
+          mat_filtered <- mat[, keep, drop = FALSE]
+          
+          
+          if (ncol(mat_filtered) == 0) {
+            showNotification(paste0("⚠️ All cells filtered out for sample ", samp, ". Skipping this sample."), type="warning")
+            next
+          }
+          
+        
+          so <- CreateSeuratObject(counts = mat_filtered, project = samp)
+        
           so$orig.ident <- samp  # for per-sample metadata
+          
+
+          # --- Ensure unique cell names per sample ---
+          so <- RenameCells(so, add.cell.id = samp)
+          so$orig.ident <- samp
           objs[[samp]] <- so
+          
+          print(paste("Loaded sample", samp, ":", nrow(so), "genes ×", ncol(so), "cells"))
         }, error = function(e) {
           showNotification(paste0("❌ Error loading ", samp, " from ", path, ": ", e$message),
                            type = "error", duration = 10)
@@ -238,6 +266,11 @@ qcModuleServer <- function(id, app_data) {
      
       if (!length(objs)) { showNotification("❌ No valid Seurat objects created", type="error"); return() }
      
+      for (s in names(objs)) {
+        objs[[s]] <- RenameCells(objs[[s]], add.cell.id = s)
+      }
+      
+      
       sample_names <- names(objs)
       merged_obj <- if (length(objs) == 1) {
         so1 <- objs[[1]]
@@ -251,6 +284,9 @@ qcModuleServer <- function(id, app_data) {
           project      = "Combined"
         )
       }
+      
+      print(paste("Merged object:", nrow(merged_obj), "genes ×", ncol(merged_obj), "cells across", length(unique(merged_obj$orig.ident)), "samples"))
+      
      
       # ---- Apply per-sample metadata using orig.ident ----
       md <- .collect_meta_df()
@@ -280,6 +316,14 @@ qcModuleServer <- function(id, app_data) {
           if (all(is.na(vals) == is.na(vnum))) {
             merged_obj[[col]] <- vnum
           } else {
+            if (length(vals) != ncol(merged_obj)) {
+              warning(sprintf(
+                "Metadata column '%s' length mismatch: %d vs %d cells. Skipping this column.",
+                col, length(vals), ncol(merged_obj)
+              ))
+              next  # skip this metadata column
+            }
+            
             merged_obj[[col]] <- vals
           }
         }

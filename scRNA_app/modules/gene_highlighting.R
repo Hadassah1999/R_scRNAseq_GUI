@@ -270,6 +270,19 @@ geneHighlightingServer <- function(id, app_data) {
     
     observeEvent(input$plot_btn, {
       obj <- .active_obj(); req(obj)
+      
+      # --- Require cell annotations before proceeding ---
+      if (!"cell_ann" %in% colnames(obj@meta.data) ||
+          all(is.na(obj$cell_ann)) ||
+          all(trimws(as.character(obj$cell_ann)) == "")) {
+        showNotification(
+          "❌ Cell annotation not found. Please run the cell annotation module before using this feature.",
+          type = "error",
+          duration = 10
+        )
+        return(invisible(NULL))  # stop execution before plotting
+      }
+      
       genes <- selected_genes(); gene_used(genes)
       
       # If genes are provided, check if they exist
@@ -284,7 +297,12 @@ geneHighlightingServer <- function(id, app_data) {
         return(showNotification("⚠️ No cells match the selected filters.", type = "warning"))
       
       # Ensure UMAP exists
-      if (is.null(obj@reductions$umap)) obj <- RunUMAP(obj, dims = 1:(app_data$num_pcs %||% 10))
+      if (!"umap" %in% names(obj@reductions)) {
+        obj <- RunUMAP(obj, dims = 1:(app_data$num_pcs %||% 10), verbose = FALSE)
+        # persist
+        if (!is.null(app_data$dataset)) app_data$dataset <- obj else app_data$seurat_obj <- obj
+      }
+      
       umap_df <- data.frame(cell = cells_keep, Embeddings(obj, "umap")[cells_keep, , drop = FALSE])
       colnames(umap_df) <- c("cell", "UMAP_1", "UMAP_2")
       
@@ -306,85 +324,88 @@ geneHighlightingServer <- function(id, app_data) {
       plot_obj({
         # If no genes selected → just regular gray UMAP
         if (!length(genes)) {
-          ggplot(umap_df, aes(UMAP_1, UMAP_2)) +
+          p <- ggplot(umap_df, aes(UMAP_1, UMAP_2)) +
             geom_point(color = "lightgray", size = 0.6) +
             theme_minimal() +
             ggtitle("UMAP (no genes selected)")
+          
+        } else if (length(genes) == 1 && input$co == "FALSE") {
+          # Single gene expression
+          expr_vec <- FetchData(obj, vars = genes[1], cells = cells_keep)[, 1]
+          df <- cbind(umap_df, expr = expr_vec)
+          p <- ggplot() +
+            geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
+            geom_point(
+              data  = df[df$expr > 0, ],
+              aes(UMAP_1, UMAP_2, alpha = expr),
+              color = input$single_color %||% "#0000FF",
+              size  = 0.6
+            ) +
+            scale_alpha_continuous(range = c(0.3, 1)) +
+            theme_minimal() +
+            ggtitle(paste("Expression of:", genes[1]))
+          
+        } else if (identical(input$co, "TRUE")) {
+          # Co-expression
+          expr_mat  <- FetchData(obj, vars = genes, cells = cells_keep)
+          co_cells  <- rownames(expr_mat)[apply(expr_mat > 0, 1, all)]
+          umap_df$highlight <- ifelse(umap_df$cell %in% co_cells, "Yes", "No")
+          p <- ggplot() +
+            geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
+            geom_point(
+              data  = umap_df[umap_df$highlight == "Yes", ],
+              aes(UMAP_1, UMAP_2),
+              color = input$co_color %||% "#0000FF",
+              size  = 0.6
+            ) +
+            theme_minimal() +
+            ggtitle(paste("Co-expression of:", paste(genes, collapse = ", ")))
+          
         } else {
-          # Gene highlighting logic (preserves your original behavior)
-          if (length(genes) == 1 && input$co == "FALSE") {
-            expr_vec <- FetchData(obj, vars = genes[1], cells = cells_keep)[, 1]
-            df <- cbind(umap_df, expr = expr_vec)
-            ggplot() +
-              geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
-              geom_point(
-                data  = df[df$expr > 0, ],
-                aes(UMAP_1, UMAP_2, alpha = expr),
-                color = input$single_color %||% "#0000FF",
-                size  = 0.6
-              ) +
-              scale_alpha_continuous(range = c(0.3, 1)) +
-              theme_minimal() +
-              ggtitle(paste("Expression of:", genes[1]))
-            
-          } else if (identical(input$co, "TRUE")) {
-            expr_mat  <- FetchData(obj, vars = genes, cells = cells_keep)
-            co_cells  <- rownames(expr_mat)[apply(expr_mat > 0, 1, all)]
-            umap_df$highlight <- ifelse(umap_df$cell %in% co_cells, "Yes", "No")
-            ggplot() +
-              geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
-              geom_point(
-                data  = umap_df[umap_df$highlight == "Yes", ],
-                aes(UMAP_1, UMAP_2),
-                color = input$co_color %||% "#0000FF",
-                size  = 0.6
-              ) +
-              theme_minimal() +
-              ggtitle(paste("Co-expression of:", paste(genes, collapse = ", ")))
-            
-          } else {
-            expr_df  <- FetchData(obj, vars = genes, cells = cells_keep)
-            combined <- cbind(umap_df, expr_df)
-            long_df  <- tidyr::pivot_longer(
-              combined, cols = genes, names_to = "gene", values_to = "expression"
-            )
-            ggplot() +
-              geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
-              geom_point(
-                data  = long_df[long_df$expression > 0, ],
-                aes(UMAP_1, UMAP_2, color = gene, alpha = expression),
-                size  = 0.6
-              ) +
-              scale_color_manual(
-                values = setNames(
-                  sapply(genes, function(g) {
-                    color_store()[[paste0("color_", g)]] %||% next_distinct_hex()
-                  }),
-                  genes
-                )
-              ) +
-              scale_alpha_continuous(range = c(0.3, 1)) +
-              theme_minimal() +
-              ggtitle(paste("Expression of:", paste(genes, collapse = ", ")))
-          } %>%
-            # Add cluster/annotation labels
-            { p <- .
-            if (isTRUE(input$show_clusters))
-              p <- p + geom_label(
-                data = cluster_centroids,
-                aes(UMAP_1, UMAP_2, label = cluster),
-                color = "black", fontface = "bold", size = 4
+          # Multiple genes (different colors)
+          expr_df  <- FetchData(obj, vars = genes, cells = cells_keep)
+          combined <- cbind(umap_df, expr_df)
+          long_df  <- tidyr::pivot_longer(
+            combined, cols = genes, names_to = "gene", values_to = "expression"
+          )
+          p <- ggplot() +
+            geom_point(data = umap_df, aes(UMAP_1, UMAP_2), color = "lightgray", size = 0.6) +
+            geom_point(
+              data  = long_df[long_df$expression > 0, ],
+              aes(UMAP_1, UMAP_2, color = gene, alpha = expression),
+              size  = 0.6
+            ) +
+            scale_color_manual(
+              values = setNames(
+                sapply(genes, function(g) {
+                  color_store()[[paste0("color_", g)]] %||% next_distinct_hex()
+                }),
+                genes
               )
-            if (isTRUE(input$show_annotations))
-              p <- p + geom_label(
-                data = annotation_centroids,
-                aes(UMAP_1, UMAP_2, label = annotation),
-                color = "darkgreen", fontface = "bold", size = 3
-              )
-            p
-            }
+            ) +
+            scale_alpha_continuous(range = c(0.3, 1)) +
+            theme_minimal() +
+            ggtitle(paste("Expression of:", paste(genes, collapse = ", ")))
         }
+        
+        # ---- ADD CLUSTER / ANNOTATION LABELS TO ALL CASES ----
+        if (isTRUE(input$show_clusters))
+          p <- p + geom_label(
+            data = cluster_centroids,
+            aes(UMAP_1, UMAP_2, label = cluster),
+            color = "black", fontface = "bold", size = 4
+          )
+        
+        if (isTRUE(input$show_annotations))
+          p <- p + geom_label(
+            data = annotation_centroids,
+            aes(UMAP_1, UMAP_2, label = annotation),
+            color = "darkgreen", fontface = "bold", size = 3
+          )
+        
+        p
       })
+      
       
       # ---- Summaries (only if genes selected) ----
       if (length(genes)) {

@@ -196,7 +196,7 @@ qcFilterServer <- function(id, app_data) {
             keep_ribo     <- !is.na(so$percent.ribo) & so$percent.ribo < maxRibo
             keep <- keep_features & keep_mt & keep_ribo & doublet_condition
             
-            filtered <- subset(so, cells = colnames(so)[keep])  # ⚠️ FIX: subset with logical index
+            filtered <- subset(so, cells = colnames(so)[keep])  
             
             parts_now[[s_name]] <- filtered
             nonempty <- sapply(parts_now, function(x) ncol(x)) > 0
@@ -210,20 +210,14 @@ qcFilterServer <- function(id, app_data) {
             
             kept_names <- names(parts_now)
             
-            merged <- if (length(parts_now) == 1) {
-              one <- parts_now[[1]]
-              if (ncol(one) > 0) {
-                colnames(one) <- paste0(kept_names[1], "_", colnames(one))
-              }
-              one
-            } else {
-              merge(
-                x = parts_now[[1]],
-                y = parts_now[-1],
-                add.cell.ids = kept_names,
-                project = "QC_filtered"
-              )
+            # Add cell prefixes for clarity
+            for (i in seq_along(parts_now)) {
+              colnames(parts_now[[i]]) <- paste0(kept_names[i], "_", colnames(parts_now[[i]]))
             }
+            
+            # Merge all parts safely
+            merged <- Reduce(function(x, y) merge(x, y), parts_now)
+            
             
             app_data$seurat_obj <- merged
             
