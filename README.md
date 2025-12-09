@@ -83,7 +83,8 @@ The path must follow this format: ```your\path\to\data.rds```<br><br>
 You can easily copy the correct path by right-clicking the file and selecting "Copy as path" (Windows).
 
 ## How to process 10X or H5 files
-<img width="1492" height="714" alt="image" src="https://github.com/user-attachments/assets/dd249156-71c2-4904-acb5-29082f4ed268" />
+<img width="1492" height="714" alt="image" src="https://github.com/user-attachments/assets/6f6b0b1e-f548-4a37-9f53-44e99673c351" />
+
 
 This is the first step in the workflow for raw data.<br>
 In this tab, you can:
