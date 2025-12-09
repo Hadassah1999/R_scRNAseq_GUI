@@ -142,15 +142,50 @@ qcModuleServer <- function(id, app_data) {
       })
     })
    
-    # ---------- UI renderers ----------
+    # ---------- UI renders ----------
     output$path_list_ui <- renderUI({
       df <- paths_df()
       if (!nrow(df)) return(NULL)
-      tags$ul(lapply(seq_len(nrow(df)), function(i) {
-        tags$li(HTML(paste0("<b>", htmltools::htmlEscape(df$name[i]), "</b>: ",
-                            htmltools::htmlEscape(df$path[i]))))
-      }))
+      
+      tags$ul(
+        lapply(seq_len(nrow(df)), function(i) {
+          samp <- df$name[i]
+          path <- df$path[i]
+          
+          tags$li(
+            div(
+              style = "display:flex; align-items:center; gap:6px;",
+              tags$span(HTML(paste0("<b>", htmltools::htmlEscape(samp), "</b>: ", htmltools::htmlEscape(path)))),
+              actionLink(ns(paste0("rm_path_", samp)), label = HTML("&times;"), title = paste0("Remove ", samp))
+            )
+          )
+        })
+      )
     })
+    
+    observe({
+      df <- paths_df()
+      lapply(df$name, function(samp) {
+        observeEvent(input[[paste0("rm_path_", samp)]], ignoreInit = TRUE, {
+          # Remove the sample from paths_df
+          df <- paths_df()
+          df <- df[df$name != samp, ]
+          paths_df(df)
+          
+          # Remove associated metadata inputs for this sample
+          cols <- meta_cols()
+          for (col in cols) {
+            input_id <- paste0("meta_", col, "_", samp)
+            # Reset the input to NULL or empty string
+            updateTextInput(session, input_id, value = "")
+          }
+          
+          showNotification(paste0("Removed sample ", samp, " and cleared its metadata."), type = "message")
+        })
+      })
+    })
+    
+    
    
     output$meta_table_ui <- renderUI({
       df <- paths_df()
@@ -237,7 +272,13 @@ qcModuleServer <- function(id, app_data) {
           nFeature_RNA <- Matrix::colSums(mat > 0)
           nCount_RNA <- Matrix::colSums(mat)
           
-          keep <- nFeature_RNA > 150 & nCount_RNA > 500
+          if (ncol(mat) > 20000) {
+            feature_filter <- 200
+          } else {
+            feature_filter <- 0
+          }
+          
+          keep <- nFeature_RNA > feature_filter 
           mat_filtered <- mat[, keep, drop = FALSE]
           
           

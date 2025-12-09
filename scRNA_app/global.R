@@ -14,7 +14,11 @@ libs <- c(
   "colourpicker",
   "purrr",
   "patchwork",
-  "scDblFinder"
+  "scDblFinder",
+  "readxl",
+  "UCell",
+  "shinyjs",
+  "tidyr"
 )
 
 # Install any that are missing
@@ -40,3 +44,8 @@ library(colourpicker)
 library(purrr)
 library(patchwork)
 library(scDblFinder)
+library(readxl)
+library(UCell)
+library(babelgene)
+library(shinyjs)
+library(tidyr)

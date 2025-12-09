@@ -23,6 +23,7 @@ geneHighlightingUI <- function(id) {
         uiOutput(ns("color_controls_ui")),
         checkboxInput(ns("show_clusters"), "Show cluster numbers", value = FALSE),
         checkboxInput(ns("show_annotations"), "Show annotation labels", value = FALSE),
+        checkboxInput(ns("color_metadata"), "Color by metadata", value = FALSE),
         actionButton(ns("plot_btn"), "Plot Feature"),
         br(), br(),
         downloadButton(ns("download_plot"), "Download Plot"),

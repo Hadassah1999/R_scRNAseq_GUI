@@ -4,9 +4,14 @@ source("modules/normalize.R")
 source("modules/pca.R")
 source("modules/cluster.R")
 source("modules/cellAnnotation.R")
+source("modules/cellEval.R")
 source("modules/gene_highlighting.R")
 source("modules/marker_genes.R")
 source("modules/final.R")
+source("modules/pathways.R")
+source("modules/cell_subtypes.R")
+
+
 
 qcUI <- function(id) {
   ns <- NS(id)
@@ -34,7 +39,13 @@ qcUI <- function(id) {
     
     tabPanel("Cell Annotation", annotationUI(ns("ann_step"))),
     
+    tabPanel("Cell Evaluation", evalUI(ns("Evaluation"))),
+    
     tabPanel("Cell highlighting by gene", geneHighlightingUI(ns("geneHighlighting"))),
+    
+    tabPanel("Pathway Analysis", pathwayUI(ns("pathway"))),
+    
+    tabPanel("Cell Subtypes", subtypeUI(ns("subtypes"))),
     
     tabPanel("Marker Genes", markersUI(ns("markers"))),
     
@@ -50,8 +61,11 @@ qcServer <- function(id, app_data) {
     pcaServer("pca_step", app_data)
     clusterServer("cluster_step", app_data)
     annotationServer("ann_step", app_data)
+    evalServer("Evaluation", app_data)
     geneHighlightingServer("geneHighlighting", app_data)
     markersServer("markers", app_data)
+    subtypeServer("subtypes", app_data)
+    pathwayServer("pathway", app_data)
     finalServer("final_step", app_data)
     observeEvent(input$back_btn, {
       session$sendCustomMessage(type = "clear_notifications", message = list())

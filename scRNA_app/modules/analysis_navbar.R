@@ -3,6 +3,11 @@ source("modules/gene_highlighting.R")
 source("modules/data_summary.R")
 source("modules/marker_genes.R")
 source("modules/download.R")
+source("modules/cellEval.R")
+source("modules/pathways.R")
+source("modules/cell_subtypes.R")
+
+
 analysisUI <- function(id) {
   ns <- NS(id)
   navbarPage(
@@ -15,10 +20,13 @@ analysisUI <- function(id) {
     ),
     tabPanel("Summary", summaryUI(ns("summary"))),
     tabPanel("Cell Annotation", annotationUI(ns("annotation"))),
+    tabPanel("Cell Evaluation", evalUI(ns("Evaluation"))),
     tabPanel("Cell highlighting by gene", geneHighlightingUI(ns("geneHighlighting"))),
+    tabPanel("Pathway Analysis", pathwayUI(ns("pathway"))),
+    tabPanel("Cell Subtypes", subtypeUI(ns("subtypes"))),
     tabPanel("Marker Genes", markersUI(ns("markers"))),
     tabPanel("Download rds", downloadUI(ns("download")))
-
+    
   )
 }
 
@@ -28,7 +36,10 @@ analysisServer <- function(id, app_data) {
     annotationServer("annotation", app_data)
     geneHighlightingServer("geneHighlighting", app_data)
     markersServer("markers", app_data)
+    pathwayServer("pathway", app_data)
+    subtypeServer("subtypes", app_data)
     downloadServer("download", app_data)
+    evalServer("Evaluation", app_data)
     observeEvent(input$back_btn, {
       session$sendCustomMessage(type = "clear_notifications", message = list())
       app_data$file_type <- NULL
