@@ -163,7 +163,7 @@ Once the preprocessing workflow is complete, you can:
 
 In the main upload screen, select .rds data type, insert path to data and press ```Load Data```.<br>
 The main analysis page would appear:<br><br>
-<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/53f016c5-b8d9-436f-b646-1c32c546b32f" />
+<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/a014559a-97fe-4298-9e7d-4f6b2cbe8eee" />
 <br>
 
 Use the navbar at the top of the page to navigate between the different analysis pages:
